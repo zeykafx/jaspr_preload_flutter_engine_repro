@@ -6,6 +6,7 @@
 
 import 'package:jaspr/client.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:jaspr_flutter_embed/jaspr_flutter_embed.dart';
 import 'package:articlett_schule_webpage/pages/about.dart' deferred as _about;
 import 'package:articlett_schule_webpage/pages/home.dart' deferred as _home;
 import 'package:articlett_schule_webpage/pages/test.dart' deferred as _test;
@@ -34,11 +35,13 @@ import 'package:shared_preferences_web/shared_preferences_web.dart'
 /// ```
 ClientOptions get defaultClientOptions => ClientOptions(
   initialize: () {
-    final Registrar registrar = webPluginRegistrar;
-    _shared_preferences_web.SharedPreferencesPlugin.registerWith(registrar);
-    _package_info_plus_web.PackageInfoPlusWebPlugin.registerWith(registrar);
-    _device_info_plus_web.DeviceInfoPlusWebPlugin.registerWith(registrar);
-    registrar.registerMessageHandler();
+    FlutterEmbedView.preload().then((_) {
+      final Registrar registrar = webPluginRegistrar;
+      _device_info_plus_web.DeviceInfoPlusWebPlugin.registerWith(registrar);
+      _package_info_plus_web.PackageInfoPlusWebPlugin.registerWith(registrar);
+      _shared_preferences_web.SharedPreferencesPlugin.registerWith(registrar);
+      registrar.registerMessageHandler();
+    });
   },
   clients: {
     'about': ClientLoader((p) => _about.About(), loader: _about.loadLibrary),

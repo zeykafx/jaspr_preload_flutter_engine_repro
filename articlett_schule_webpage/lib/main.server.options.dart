@@ -36,9 +36,9 @@ ServerOptions get defaultServerOptions => ServerOptions(
     _test.Test: ClientTarget<_test.Test>('test'),
   },
   styles: () => [
+    ..._app.App.styles,
     ..._counter.CounterState.styles,
     ..._header.Header.styles,
     ..._about.About.styles,
-    ..._app.App.styles,
   ],
 );
